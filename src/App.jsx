@@ -190,7 +190,7 @@ function AppContent() {
 
       <Box sx={{ flexGrow: 1, p: 0, overflow: 'hidden', '& .split-flex': { display: 'flex', height: '100%' } }}>
         <Split
-          sizes={[20, 55, 25]}
+          sizes={[18, 52, 30]}
           minSize={[200, 300, 300]}
           expandToMin={false}
           gutterSize={4}
