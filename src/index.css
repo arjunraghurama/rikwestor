@@ -1,0 +1,55 @@
+/* Global Styles for HTML and Body */
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+/* Ensure font smooth */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* react-split gutter styles */
+.gutter {
+  background-color: transparent;
+  transition: background-color 0.15s ease;
+  position: relative;
+  z-index: 10;
+}
+
+.gutter:hover {
+  background-color: #007acc;
+  /* IDE blue */
+}
+
+.gutter.gutter-horizontal {
+  cursor: col-resize;
+}
+
+/* CodeMirror Variable Highlighting */
+.cm-var-valid {
+  color: #00d084 !important;
+  font-weight: bold;
+}
+
+.cm-var-invalid {
+  color: #f50057 !important;
+  text-decoration: underline wavy #f50057;
+  font-weight: bold;
+}
+
+/* Base override for CodeMirror within MUI Box */
+.cm-editor {
+  height: 100%;
+  font-family: inherit !important;
+  font-size: 14px;
+}
+
+.cm-scroller {
+  font-family: inherit !important;
+}

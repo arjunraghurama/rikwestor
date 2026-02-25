@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <!-- Simple professional gradients -->
+    <linearGradient id="upGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#007acc" /> <!-- IDE Blue -->
+      <stop offset="100%" stop-color="#00A3FF" />
+    </linearGradient>
+    <linearGradient id="downGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00d084" /> <!-- Mint Green -->
+      <stop offset="100%" stop-color="#00AB6B" />
+    </linearGradient>
+  </defs>
+
+  <!-- Dark background to match the app theme -->
+  <rect width="100" height="100" rx="28" fill="#1e1e1e" />
+
+  <!-- Outgoing Request (Up Arrow) -->
+  <path 
+    d="M 35,75 L 35,35 L 20,35 L 42.5,15 L 65,35 L 50,35 L 50,75 Z" 
+    fill="url(#upGrad)" 
+  />
+
+  <!-- Incoming Response (Down Arrow) -->
+  <path 
+    d="M 65,25 L 65,65 L 80,65 L 57.5,85 L 35,65 L 50,65 L 50,25 Z" 
+    fill="url(#downGrad)" 
+  />
+</svg>
