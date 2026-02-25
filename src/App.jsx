@@ -162,7 +162,7 @@ function AppContent() {
         <Toolbar variant="dense">
           <Box
             component="img"
-            src="/logo.svg"
+            src={`${import.meta.env.BASE_URL}logo.svg`}
             alt="Rikwestor Logo"
             sx={{
               height: 28,
