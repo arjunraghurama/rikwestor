@@ -21,31 +21,47 @@ export function useColorTheme() {
                 palette: {
                     mode,
                     primary: {
-                        main: '#00d084', // Mint green, similar to postman/httpie accents
+                        main: '#8b5cf6', // Stitch purple
                     },
                     secondary: {
                         main: '#f50057',
                     },
                     background: {
-                        default: mode === 'dark' ? '#000000' : '#f4f6f8',
-                        paper: mode === 'dark' ? '#111111' : '#ffffff',
+                        default: mode === 'dark' ? '#0a0a0c' : '#f5f8f7',
+                        paper: mode === 'dark' ? '#16161e' : '#ffffff',
                     },
+                    divider: mode === 'dark' ? '#2d2d3a' : 'rgba(0,0,0,0.12)',
+                    text: {
+                        primary: mode === 'dark' ? '#f1f5f9' : '#0f172a',
+                        secondary: mode === 'dark' ? '#94a3b8' : '#64748b',
+                    }
                 },
                 typography: {
-                    fontFamily: '"Roboto Mono", "Roboto", "Inter", "Helvetica", "Arial", sans-serif',
+                    fontFamily: '"Space Grotesk", sans-serif',
                     button: {
                         textTransform: 'none',
+                        fontWeight: 700,
+                    },
+                    subtitle1: {
                         fontWeight: 600,
                     },
+                    body2: {
+                        fontSize: '0.875rem',
+                    }
                 },
                 shape: {
-                    borderRadius: 12,
+                    borderRadius: 8,
                 },
                 components: {
                     MuiButton: {
                         styleOverrides: {
                             root: {
                                 boxShadow: 'none',
+                                borderRadius: 8,
+                                padding: '8px 16px',
+                                '&:hover': {
+                                    boxShadow: 'none',
+                                },
                             },
                         },
                     },
@@ -54,7 +70,38 @@ export function useColorTheme() {
                             variant: 'outlined',
                             size: 'small',
                         },
+                        styleOverrides: {
+                            root: {
+                                '& .MuiOutlinedInput-root': {
+                                    borderRadius: 8,
+                                    backgroundColor: mode === 'dark' ? 'rgba(0,0,0,0.2)' : 'transparent',
+                                }
+                            }
+                        }
                     },
+                    MuiSelect: {
+                        styleOverrides: {
+                            root: {
+                                borderRadius: 8,
+                            }
+                        }
+                    },
+                    MuiTab: {
+                        styleOverrides: {
+                            root: {
+                                textTransform: 'none',
+                                fontWeight: 600,
+                                minWidth: 100,
+                            }
+                        }
+                    },
+                    MuiPaper: {
+                        styleOverrides: {
+                            root: {
+                                backgroundImage: 'none',
+                            }
+                        }
+                    }
                 },
             }),
         [mode]

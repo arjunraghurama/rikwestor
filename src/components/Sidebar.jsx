@@ -35,34 +35,61 @@ export function Sidebar({ history, onRequestSelect, onDeleteRequest }) {
                             <ListItemText preview="" primary={<Typography variant="body2" color="text.secondary">No requests yet</Typography>} />
                         </ListItem>
                     ) : (
-                        history.map((item, index) => (
-                            <ListItemButton
-                                key={index}
-                                onClick={() => onRequestSelect(item.request)}
-                                sx={{ borderBottom: '1px solid', borderColor: 'divider', flexDirection: 'column', alignItems: 'flex-start', p: 1.5, position: 'relative' }}
-                            >
-                                <IconButton
-                                    size="small"
-                                    color="error"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        onDeleteRequest(index);
+                        history.map((item, index) => {
+                            const methodColors = {
+                                'GET': '#3b82f6', // blue-500
+                                'POST': '#22c55e', // green-500
+                                'PUT': '#f97316', // orange-500
+                                'DELETE': '#ef4444', // red-500
+                                'PATCH': '#eab308' // yellow-500
+                            };
+                            return (
+                                <ListItemButton
+                                    key={index}
+                                    onClick={() => onRequestSelect(item.request)}
+                                    sx={{
+                                        borderBottom: '1px solid',
+                                        borderColor: 'divider',
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        gap: 2,
+                                        p: 1.5,
+                                        px: 3,
+                                        position: 'relative',
+                                        '&:hover': {
+                                            bgcolor: 'rgba(255,255,255,0.05)'
+                                        }
                                     }}
-                                    sx={{ position: 'absolute', top: 4, right: 4 }}
                                 >
-                                    <DeleteIcon sx={{ fontSize: 16 }} />
-                                </IconButton>
-                                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', mb: 0.5, width: '100%', pr: 3 }}>
-                                    <Chip label={item.request.method} size="small" color={getMethodColor(item.request.method)} sx={{ fontWeight: 'bold', fontSize: '0.7rem', height: 20 }} />
-                                    <Typography variant="caption" color="text.secondary">
-                                        {new Date(item.timestamp).toLocaleTimeString()}
+                                    <Typography
+                                        variant="caption"
+                                        sx={{
+                                            fontWeight: 700,
+                                            fontSize: '10px',
+                                            width: 40,
+                                            color: methodColors[item.request.method] || '#94a3b8'
+                                        }}
+                                    >
+                                        {item.request.method}
                                     </Typography>
-                                </Box>
-                                <Typography variant="body2" noWrap sx={{ width: '100%', fontWeight: 500 }}>
-                                    {item.request.url || 'Empty URL'}
-                                </Typography>
-                            </ListItemButton>
-                        ))
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, overflow: 'hidden' }}>
+                                        <Typography variant="body2" noWrap sx={{ fontWeight: 500, fontSize: '0.75rem', color: 'text.primary' }}>
+                                            {item.request.url || 'Empty URL'}
+                                        </Typography>
+                                    </Box>
+                                    <IconButton
+                                        size="small"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            onDeleteRequest(index);
+                                        }}
+                                        sx={{ color: 'text.secondary', '&:hover': { color: '#ef4444' }, p: 0.5 }}
+                                    >
+                                        <DeleteIcon sx={{ fontSize: 16 }} />
+                                    </IconButton>
+                                </ListItemButton>
+                            );
+                        })
                     )}
                 </List>
             </Box>

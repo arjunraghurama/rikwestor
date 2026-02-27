@@ -12,25 +12,27 @@ function KeyValuePanel({ items, onChange, onAdd, onRemove }) {
     return (
         <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
             {items.map((item, index) => (
-                <Box key={index} sx={{ display: 'flex', gap: 1 }}>
+                <Box key={index} sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
                     <TextField
-                        label="Key"
+                        placeholder="Key"
                         value={item.key}
                         onChange={(e) => onChange(index, 'key', e.target.value)}
                         fullWidth
+                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: 1 } }}
                     />
                     <TextField
-                        label="Value"
+                        placeholder="Value"
                         value={item.value}
                         onChange={(e) => onChange(index, 'value', e.target.value)}
                         fullWidth
+                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: 1 } }}
                     />
-                    <IconButton color="error" onClick={() => onRemove(index)}>
-                        <DeleteIcon />
+                    <IconButton color="error" onClick={() => onRemove(index)} sx={{ p: 0.5, '&:hover': { bgcolor: 'error.main', color: '#fff' } }}>
+                        <DeleteIcon fontSize="small" />
                     </IconButton>
                 </Box>
             ))}
-            <Button startIcon={<AddIcon />} onClick={onAdd} sx={{ alignSelf: 'flex-start', mt: 1 }}>
+            <Button startIcon={<AddIcon />} onClick={onAdd} sx={{ alignSelf: 'flex-start', mt: 1, color: 'text.secondary' }}>
                 Add Item
             </Button>
         </Box>
@@ -154,64 +156,92 @@ export function RequestPane({ requestDetails, setRequestDetails, onSend, loading
 
     return (
         <Paper elevation={0} sx={{ borderRadius: 0, overflow: 'hidden', border: '1px solid', borderColor: 'divider', height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <Box sx={{ p: 2, display: 'flex', gap: 1, alignItems: 'center', backgroundColor: 'background.paper', borderBottom: '1px solid', borderColor: 'divider' }}>
-                <Select
-                    size="small"
-                    value={requestDetails.method}
-                    onChange={handleMethodChange}
-                    sx={{ width: 120, height: 40, fontWeight: 'bold' }}
-                >
-                    <MenuItem value="GET">GET</MenuItem>
-                    <MenuItem value="POST">POST</MenuItem>
-                    <MenuItem value="PUT">PUT</MenuItem>
-                    <MenuItem value="PATCH">PATCH</MenuItem>
-                    <MenuItem value="DELETE">DELETE</MenuItem>
-                </Select>
-                <Box sx={{
-                    flexGrow: 1,
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    borderRadius: 1,
-                    height: 40,
-                    overflow: 'hidden',
-                    backgroundColor: 'background.default',
-                    '&:hover': { borderColor: 'text.primary' }
-                }}>
-                    <CodeMirror
-                        value={requestDetails.url}
-                        onChange={handleUrlChange}
-                        onKeyDown={handleUrlKeyDown}
-                        theme={theme.palette.mode === 'dark' ? 'dark' : 'light'}
-                        extensions={[editorTheme, variableHighlightPlugin]}
-                        basicSetup={{
-                            lineNumbers: false,
-                            foldGutter: false,
-                            highlightActiveLine: false,
-                            highlightSelectionMatches: false,
-                            bracketMatching: false
+            <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 2, backgroundColor: 'background.default', borderBottom: '1px solid', borderColor: 'divider' }}>
+                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                    <Box sx={{ position: 'relative', width: 140 }}>
+                        <Select
+                            size="small"
+                            value={requestDetails.method}
+                            onChange={handleMethodChange}
+                            sx={{
+                                width: '100%',
+                                height: 44,
+                                fontWeight: 700,
+                                color: requestDetails.method === 'GET' ? '#3b82f6' : requestDetails.method === 'POST' ? '#22c55e' : requestDetails.method === 'PUT' ? '#f97316' : requestDetails.method === 'DELETE' ? '#ef4444' : '#eab308',
+                                bgcolor: 'background.paper',
+                                '& .MuiOutlinedInput-notchedOutline': { borderColor: 'divider' },
+                                '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main' }
+                            }}
+                        >
+                            <MenuItem value="GET" sx={{ fontWeight: 700, color: '#3b82f6' }}>GET</MenuItem>
+                            <MenuItem value="POST" sx={{ fontWeight: 700, color: '#22c55e' }}>POST</MenuItem>
+                            <MenuItem value="PUT" sx={{ fontWeight: 700, color: '#f97316' }}>PUT</MenuItem>
+                            <MenuItem value="PATCH" sx={{ fontWeight: 700, color: '#eab308' }}>PATCH</MenuItem>
+                            <MenuItem value="DELETE" sx={{ fontWeight: 700, color: '#ef4444' }}>DELETE</MenuItem>
+                        </Select>
+                    </Box>
+                    <Box sx={{
+                        flexGrow: 1,
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        borderRadius: 2, // 8px
+                        height: 44,
+                        overflow: 'hidden',
+                        backgroundColor: 'background.paper',
+                        '&:hover': { borderColor: 'primary.main' },
+                        display: 'flex',
+                        alignItems: 'center' // Vertically center inner content
+                    }}>
+                        <CodeMirror
+                            value={requestDetails.url}
+                            onChange={handleUrlChange}
+                            onKeyDown={handleUrlKeyDown}
+                            theme={theme.palette.mode === 'dark' ? 'dark' : 'light'}
+                            extensions={[editorTheme, variableHighlightPlugin]}
+                            basicSetup={{
+                                lineNumbers: false,
+                                foldGutter: false,
+                                highlightActiveLine: false,
+                                highlightSelectionMatches: false,
+                                bracketMatching: false
+                            }}
+                            style={{ flexGrow: 1, display: 'flex' }}
+                        />
+                    </Box>
+                    <Button
+                        variant="contained"
+                        disabled={loading || !requestDetails.url}
+                        onClick={onSend}
+                        endIcon={<SendIcon />}
+                        sx={{
+                            minWidth: 120,
+                            height: 44,
+                            bgcolor: 'primary.main',
+                            color: '#000', // Match deep dark text color from design
+                            fontWeight: 700,
+                            letterSpacing: '0.05em',
+                            '&:hover': { bgcolor: 'primary.light' }
                         }}
-                    />
+                    >
+                        {loading ? 'SENDING...' : 'SEND'}
+                    </Button>
                 </Box>
-                <Button
-                    variant="contained"
-                    disabled={loading || !requestDetails.url}
-                    onClick={onSend}
-                    endIcon={<SendIcon />}
-                    sx={{ minWidth: 100, height: 40, boxShadow: 'none' }}
-                >
-                    {loading ? 'Sending' : 'Send'}
-                </Button>
             </Box>
 
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={tabIndex} onChange={handleTabChange} aria-label="request tabs">
+            <Box sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'background.paper' }}>
+                <Tabs
+                    value={tabIndex}
+                    onChange={handleTabChange}
+                    aria-label="request tabs"
+                    TabIndicatorProps={{ style: { height: 3, borderTopLeftRadius: 3, borderTopRightRadius: 3 } }}
+                >
                     <Tab label="Params" />
                     <Tab label="Headers" />
                     <Tab label="Body" />
                 </Tabs>
             </Box>
 
-            <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
+            <Box sx={{ flexGrow: 1, overflowY: 'auto', minHeight: 0 }}>
                 {tabIndex === 0 && (
                     <KeyValuePanel
                         items={requestDetails.params}

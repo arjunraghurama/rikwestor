@@ -158,24 +158,35 @@ function AppContent() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
-      <AppBar position="static" color="primary" elevation={1}>
-        <Toolbar variant="dense">
-          <Box
-            component="img"
-            src={`${import.meta.env.BASE_URL}logo.svg`}
-            alt="Rikwestor Logo"
-            sx={{
-              height: 28,
-              width: 28,
-              mr: 2,
-              filter: 'drop-shadow(0px 0px 2px rgba(0,0,0,0.2))'
-            }}
-          />
+      <Box
+        component="header"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+          bgcolor: 'background.paper',
+          px: 3,
+          py: 1.5,
+          flexShrink: 0
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
 
-          <Box sx={{ flexGrow: 1 }} />
+            <Typography variant="h6" fontWeight="bold" sx={{ letterSpacing: '-0.025em' }}>
+              {/* Rikwestor <Typography component="span" sx={{ color: 'primary.main', fontSize: '0.75rem', textTransform: 'uppercase', ml: 0.5, opacity: 0.8, fontWeight: 'bold' }}>Pro</Typography> */}
+              Rikwestor
+            </Typography>
+          </Box>
+        </Box>
 
-          <IconButton onClick={toggleColorMode} color="inherit" sx={{ ml: 2 }}>
-            {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+        <Box sx={{ flexGrow: 1 }} />
+
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <IconButton onClick={toggleColorMode} color="inherit" size="small">
+            {mode === 'dark' ? <LightModeIcon fontSize="small" /> : <DarkModeIcon fontSize="small" />}
           </IconButton>
 
           <EnvironmentsMenu
@@ -184,14 +195,13 @@ function AppContent() {
             setEnvironments={setEnvironments}
             setActiveEnvId={setActiveEnvId}
           />
+        </Box>
+      </Box>
 
-        </Toolbar>
-      </AppBar>
-
-      <Box sx={{ flexGrow: 1, p: 0, overflow: 'hidden', '& .split-flex': { display: 'flex', height: '100%' } }}>
+      <Box sx={{ flexGrow: 1, p: 0, overflow: 'hidden', '& .split-flex': { display: 'flex', height: '100%' }, '& .split-flex-vertical': { display: 'flex', flexDirection: 'column', height: '100%' } }}>
         <Split
-          sizes={[18, 52, 30]}
-          minSize={[200, 300, 300]}
+          sizes={[20, 80]}
+          minSize={[200, 400]}
           expandToMin={false}
           gutterSize={4}
           gutterAlign="center"
@@ -201,21 +211,36 @@ function AppContent() {
           className="split-flex"
           cursor="col-resize"
         >
-          <Box sx={{ height: '100%', overflow: 'hidden' }}>
+          <Box sx={{ height: '100%', overflow: 'hidden', pb: '5px' }}>
             <Sidebar history={history} onRequestSelect={handleSelectHistory} onDeleteRequest={handleDeleteHistory} />
           </Box>
           <Box sx={{ height: '100%', overflow: 'hidden' }}>
-            <RequestPane
-              requestDetails={requestDetails}
-              setRequestDetails={setRequestDetails}
-              onSend={handleSendRequest}
-              loading={loading}
-              environments={environments}
-              activeEnvId={activeEnvId}
-            />
-          </Box>
-          <Box sx={{ height: '100%', overflow: 'hidden' }}>
-            <ResponsePane response={response} />
+            <Split
+              sizes={[50, 50]}
+              minSize={[200, 200]}
+              expandToMin={false}
+              gutterSize={4}
+              gutterAlign="center"
+              snapOffset={30}
+              dragInterval={1}
+              direction="vertical"
+              className="split-flex-vertical"
+              cursor="row-resize"
+            >
+              <Box sx={{ height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                <RequestPane
+                  requestDetails={requestDetails}
+                  setRequestDetails={setRequestDetails}
+                  onSend={handleSendRequest}
+                  loading={loading}
+                  environments={environments}
+                  activeEnvId={activeEnvId}
+                />
+              </Box>
+              <Box sx={{ height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column', pb: '5px' }}>
+                <ResponsePane response={response} />
+              </Box>
+            </Split>
           </Box>
         </Split>
       </Box>

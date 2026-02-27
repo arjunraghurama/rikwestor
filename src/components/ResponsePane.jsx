@@ -50,27 +50,39 @@ export function ResponsePane({ response }) {
 
     return (
         <Paper elevation={0} sx={{ borderRadius: 0, overflow: 'hidden', border: '1px solid', borderColor: 'divider', height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <Box sx={{ p: 2, display: 'flex', gap: 2, alignItems: 'center', backgroundColor: 'background.paper', borderBottom: '1px solid', borderColor: 'divider' }}>
-                <Typography variant="subtitle1" fontWeight="bold">Response</Typography>
-                <Chip
-                    label={`${status} ${statusText || ''}`}
-                    color={getStatusColor(status)}
-                    size="small"
-                    variant="outlined"
-                    sx={{ fontWeight: 'bold' }}
-                />
-                <Chip label={`${time} ms`} size="small" variant="outlined" />
-                <Chip label={size} size="small" variant="outlined" />
+            <Box sx={{ p: 2, display: 'flex', gap: 3, alignItems: 'center', backgroundColor: 'background.paper', borderBottom: '1px solid', borderColor: 'divider' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'text.secondary', fontSize: '0.75rem' }}>Response</Typography>
+                    <Box sx={{
+                        bgcolor: status >= 200 && status < 300 ? 'rgba(34, 197, 94, 0.2)' : status >= 400 ? 'rgba(239, 68, 68, 0.2)' : 'rgba(234, 179, 8, 0.2)',
+                        color: status >= 200 && status < 300 ? '#22c55e' : status >= 400 ? '#ef4444' : '#eab308',
+                        px: 1,
+                        py: 0.25,
+                        borderRadius: 1,
+                        fontSize: '0.7rem',
+                        fontWeight: 900
+                    }}>
+                        {status} {statusText || ''}
+                    </Box>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, fontSize: '0.75rem', fontWeight: 500, color: 'text.secondary' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>⏱ </Typography> {time} ms
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>💾 </Typography> {size}
+                    </Box>
+                </Box>
             </Box>
 
             <Box sx={{ borderBottom: 1, borderColor: 'divider', backgroundColor: 'background.paper' }}>
-                <Tabs value={tabIndex} onChange={handleTabChange}>
+                <Tabs value={tabIndex} onChange={handleTabChange} TabIndicatorProps={{ style: { height: 3, borderTopLeftRadius: 3, borderTopRightRadius: 3 } }}>
                     <Tab label="Body" />
                     <Tab label="Headers" />
                 </Tabs>
             </Box>
 
-            <Box sx={{ flexGrow: 1, overflowY: 'auto', p: 2, backgroundColor: theme.palette.mode === 'dark' ? '#0a0a0a' : '#f5f5f5' }}>
+            <Box sx={{ flexGrow: 1, overflowY: 'auto', p: 0, backgroundColor: theme.palette.mode === 'dark' ? '#0d0d12' : '#f8fafc', minHeight: 0 }}>
                 {tabIndex === 0 && (
                     <Box>
                         {error ? (

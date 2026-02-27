@@ -1,3 +1,9 @@
+@import '@fontsource/space-grotesk/300.css';
+@import '@fontsource/space-grotesk/400.css';
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/600.css';
+@import '@fontsource/space-grotesk/700.css';
+
 /* Global Styles for HTML and Body */
 html,
 body,
@@ -6,6 +12,7 @@ body,
   padding: 0;
   height: 100%;
   width: 100%;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 /* Ensure font smooth */
@@ -23,12 +30,16 @@ body {
 }
 
 .gutter:hover {
-  background-color: #007acc;
-  /* IDE blue */
+  background-color: #8b5cf6;
+  /* IDE purple */
 }
 
 .gutter.gutter-horizontal {
   cursor: col-resize;
+}
+
+.gutter.gutter-vertical {
+  cursor: row-resize;
 }
 
 /* CodeMirror Variable Highlighting */
@@ -38,8 +49,8 @@ body {
 }
 
 .cm-var-invalid {
-  color: #f50057 !important;
-  text-decoration: underline wavy #f50057;
+  color: #f87171 !important;
+  text-decoration: underline wavy #f87171;
   font-weight: bold;
 }
 
