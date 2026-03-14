@@ -287,6 +287,18 @@ function App() {
 
       <div className="flex flex-1 overflow-hidden">
         <aside className="w-64 border-r border-slate-200 dark:border-border-dark bg-slate-50 dark:bg-surface-dark flex flex-col shrink-0">
+          <div className="mt-auto p-4 border-t border-slate-200 dark:border-border-dark space-y-1 shrink-0">
+            <button
+              onClick={() => {
+                setRequestDetails({ method: 'GET', url: '', params: [], headers: [], body: '' });
+                setResponse(null);
+              }}
+              className="w-full mt-4 bg-primary hover:bg-primary/90 text-white dark:text-background-dark font-bold py-2.5 rounded-lg text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-primary/20 dark:shadow-lg dark:shadow-primary/20"
+            >
+              <span className="material-symbols-outlined text-sm">add</span>
+              New Request
+            </button>
+          </div>
           <div className="p-4 flex flex-col gap-1 flex-1 overflow-hidden">
             <div className="flex items-center justify-between mb-2 px-2 shrink-0">
               <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">History</span>
@@ -335,20 +347,7 @@ function App() {
                 ))
               )}
             </div>
-          </div>
-
-          <div className="mt-auto p-4 border-t border-slate-200 dark:border-border-dark space-y-1 shrink-0">
-            <button
-              onClick={() => {
-                setRequestDetails({ method: 'GET', url: '', params: [], headers: [], body: '' });
-                setResponse(null);
-              }}
-              className="w-full mt-4 bg-primary hover:bg-primary/90 text-white dark:text-background-dark font-bold py-2.5 rounded-lg text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-primary/20 dark:shadow-lg dark:shadow-primary/20"
-            >
-              <span className="material-symbols-outlined text-sm">add</span>
-              New Request
-            </button>
-          </div>
+          </div>    
         </aside>
 
         <main className="flex-1 flex flex-col min-w-0 bg-slate-100 dark:bg-background-dark overflow-y-auto custom-scrollbar">
