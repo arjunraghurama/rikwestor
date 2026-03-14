@@ -46,7 +46,7 @@ export function Sidebar({ history, onRequestSelect, onDeleteRequest }) {
                             return (
                                 <ListItemButton
                                     key={index}
-                                    onClick={() => onRequestSelect(item.request)}
+                                    onClick={() => onRequestSelect(item.request, item.response)}
                                     sx={{
                                         borderBottom: '1px solid',
                                         borderColor: 'divider',
@@ -76,6 +76,11 @@ export function Sidebar({ history, onRequestSelect, onDeleteRequest }) {
                                         <Typography variant="body2" noWrap sx={{ fontWeight: 500, fontSize: '0.75rem', color: 'text.primary' }}>
                                             {item.request.url || 'Empty URL'}
                                         </Typography>
+                                        {item.response && (
+                                            <Typography variant="caption" sx={{ fontSize: '0.65rem', color: item.response.status >= 200 && item.response.status < 300 ? 'success.main' : (item.response.status > 0 ? 'warning.main' : 'error.main') }}>
+                                                {item.response.status > 0 ? `${item.response.status} ${item.response.statusText}` : 'Error'}
+                                            </Typography>
+                                        )}
                                     </Box>
                                     <IconButton
                                         size="small"

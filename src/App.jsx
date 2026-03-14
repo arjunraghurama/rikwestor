@@ -57,8 +57,9 @@ function AppContent() {
     setResponse(null);
     const startTime = performance.now();
 
+    const historyId = Date.now().toString() + Math.random().toString();
     // Save to history before interpolating so history shows the raw {{vars}}
-    setHistory(prev => [{ request: { ...requestDetails }, timestamp: Date.now() }, ...prev]);
+    setHistory(prev => [{ id: historyId, request: { ...requestDetails }, timestamp: Date.now(), response: null }, ...prev]);
 
     // Interpolate URL
     let finalUrl = interpolate(requestDetails.url);
@@ -122,34 +123,38 @@ function AppContent() {
         data = rawText;
       }
 
-      setResponse({
+      const responseObj = {
         status: res.status,
         statusText: res.statusText,
         time,
         size,
         headers: resHeaders,
         data,
-      });
+      };
+      setResponse(responseObj);
+      setHistory(prev => prev.map(item => item.id === historyId ? { ...item, response: responseObj } : item));
 
     } catch (err) {
       const endTime = performance.now();
       const time = Math.round(endTime - startTime);
-      setResponse({
+      const responseObj = {
         status: 0,
         statusText: 'Error',
         time,
         size: '0 KB',
         error: err.toString(),
         data: null,
-      });
+      };
+      setResponse(responseObj);
+      setHistory(prev => prev.map(item => item.id === historyId ? { ...item, response: responseObj } : item));
     }
 
     setLoading(false);
   };
 
-  const handleSelectHistory = (historicalRequest) => {
+  const handleSelectHistory = (historicalRequest, historicalResponse) => {
     setRequestDetails(historicalRequest);
-    setResponse(null);
+    setResponse(historicalResponse || null);
   };
 
   const handleDeleteHistory = (index) => {
