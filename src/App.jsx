@@ -101,7 +101,7 @@ function App() {
       outline: "none"
     },
     ".cm-cursor": {
-      borderLeftColor: "white"
+      borderLeftColor: isDarkMode ? "white" : "black"
     },
   });
 
@@ -374,7 +374,7 @@ function App() {
                     value={requestDetails.url}
                     onChange={(val) => setRequestDetails({ ...requestDetails, url: val })}
                     onKeyDown={(e) => e.key === 'Enter' && handleSendRequest()}
-                    theme="dark"
+                    theme={isDarkMode ? 'dark' : 'light'}
                     extensions={[editorTheme, variableHighlightPlugin]}
                     basicSetup={{
                       lineNumbers: false,
@@ -470,7 +470,7 @@ function App() {
                     <CodeMirror
                       value={requestDetails.body}
                       onChange={(val) => setRequestDetails({ ...requestDetails, body: val })}
-                      theme="dark"
+                      theme={isDarkMode ? 'dark' : 'light'}
                       extensions={[json(), variableHighlightPlugin]}
                       basicSetup={{
                         lineNumbers: true,
