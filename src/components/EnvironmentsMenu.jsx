@@ -10,7 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-export function EnvironmentsMenu({ environments, activeEnvId, setEnvironments, setActiveEnvId }) {
+export function EnvironmentsMenu({ environments, activeEnvId, setEnvironments, setActiveEnvId, isDarkMode }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -74,30 +74,14 @@ export function EnvironmentsMenu({ environments, activeEnvId, setEnvironments, s
 
     return (
         <>
-            <Tooltip title="Environments">
-                <Button
-                    onClick={handleOpenMenu}
-                    startIcon={<StorageIcon fontSize="small" />}
-                    endIcon={<KeyboardArrowDownIcon />}
-                    sx={{
-                        textTransform: 'none',
-                        ml: 2,
-                        fontWeight: 'bold',
-                        fontFamily: 'monospace',
-                        borderRadius: 0,
-                        border: '1px solid',
-                        borderColor: 'primary.dark',
-                        backgroundColor: 'primary.dark',
-                        color: 'primary.contrastText',
-                        px: 2,
-                        '&:hover': {
-                            backgroundColor: 'primary.main',
-                        }
-                    }}
-                >
-                    {activeEnv ? activeEnv.name : 'No Environment'}
-                </Button>
-            </Tooltip>
+            <button
+                onClick={handleOpenMenu}
+                className="flex items-center gap-2 px-3 py-1.5 bg-slate-200 dark:bg-surface-dark border border-slate-300 dark:border-border-dark rounded-lg text-xs font-bold hover:bg-slate-300 dark:hover:bg-white/5 transition-colors text-slate-700 dark:text-slate-300"
+            >
+                <span className="material-symbols-outlined text-sm">public</span>
+                {activeEnv ? activeEnv.name : 'No Environment'}
+                <span className="material-symbols-outlined text-sm">expand_more</span>
+            </button>
 
             <Menu
                 anchorEl={anchorEl}
@@ -106,93 +90,122 @@ export function EnvironmentsMenu({ environments, activeEnvId, setEnvironments, s
                 PaperProps={{
                     sx: {
                         minWidth: 260,
-                        borderRadius: 0,
-                        mt: 1
+                        borderRadius: 2,
+                        mt: 1,
+                        bgcolor: isDarkMode ? '#16161e' : '#f8fafc',
+                        color: isDarkMode ? '#f8fafc' : '#1e293b',
+                        border: isDarkMode ? '1px solid #2d2d3a' : '1px solid #e2e8f0'
                     }
                 }}
             >
                 <MenuItem
                     selected={activeEnvId === null}
                     onClick={() => { setActiveEnvId(null); handleCloseMenu(); }}
+                    sx={{ '&.Mui-selected': { bgcolor: 'rgba(139, 92, 246, 0.15)', color: '#8b5cf6' }, '&:hover': { bgcolor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' } }}
                 >
                     No Environment
                 </MenuItem>
-                <Divider />
+                <Divider sx={{ borderColor: isDarkMode ? '#2d2d3a' : '#e2e8f0' }} />
                 {environments.map(env => (
                     <MenuItem
                         key={env.id}
                         selected={activeEnvId === env.id}
                         onClick={() => { setActiveEnvId(env.id); handleCloseMenu(); }}
+                        sx={{ '&.Mui-selected': { bgcolor: 'rgba(139, 92, 246, 0.15)', color: '#8b5cf6' }, '&:hover': { bgcolor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' } }}
                     >
                         {env.name}
                     </MenuItem>
                 ))}
-                <Divider />
-                <MenuItem onClick={handleOpenDialog}>
-                    <EditIcon fontSize="small" sx={{ mr: 1 }} /> Manage Environments
+                <Divider sx={{ borderColor: isDarkMode ? '#2d2d3a' : '#e2e8f0' }} />
+                <MenuItem onClick={handleOpenDialog} sx={{ '&:hover': { bgcolor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' } }}>
+                    <EditIcon fontSize="small" sx={{ mr: 1, color: isDarkMode ? '#94a3b8' : '#64748b' }} /> Manage Environments
                 </MenuItem>
             </Menu>
 
-            <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="md" fullWidth>
-                <DialogTitle>Manage Environments</DialogTitle>
-                <DialogContent dividers>
+            <Dialog
+                open={dialogOpen}
+                onClose={handleCloseDialog}
+                maxWidth="md"
+                fullWidth
+                PaperProps={{
+                    sx: {
+                        bgcolor: isDarkMode ? '#16161e' : '#f8fafc',
+                        color: isDarkMode ? '#f8fafc' : '#1e293b',
+                        border: isDarkMode ? '1px solid #2d2d3a' : '1px solid #e2e8f0',
+                        borderRadius: 3
+                    }
+                }}
+            >
+                <DialogTitle sx={{ borderBottom: '1px solid #2d2d3a', fontWeight: 'bold' }}>Manage Environments</DialogTitle>
+                <DialogContent sx={{ mt: 2 }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                         {editingEnvs.map((env, envIndex) => (
-                            <Box key={env.id} sx={{ p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 2 }}>
-                                <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center' }}>
+                            <Box key={env.id} sx={{ p: 3, border: isDarkMode ? '1px solid #2d2d3a' : '1px solid #e2e8f0', bgcolor: isDarkMode ? '#0a0a0c' : '#f1f5f9', borderRadius: 2 }}>
+                                <Box sx={{ display: 'flex', gap: 2, mb: 3, alignItems: 'center' }}>
                                     <TextField
                                         size="small"
                                         label="Environment Name"
                                         value={env.name}
                                         onChange={(e) => updateEnvName(envIndex, e.target.value)}
-                                        sx={{ flexGrow: 1 }}
+                                        sx={{
+                                            flexGrow: 1,
+                                            '& .MuiOutlinedInput-root': { color: isDarkMode ? '#f8fafc' : '#1e293b', '& fieldset': { borderColor: isDarkMode ? '#2d2d3a' : '#e2e8f0' }, '&:hover fieldset': { borderColor: '#8b5cf6' }, '&.Mui-focused fieldset': { borderColor: '#8b5cf6' } },
+                                            '& .MuiInputLabel-root': { color: isDarkMode ? '#94a3b8' : '#64748b' },
+                                            '& .MuiInputLabel-root.Mui-focused': { color: '#8b5cf6' }
+                                        }}
                                     />
-                                    <IconButton color="error" onClick={() => deleteEnvironment(envIndex)}>
+                                    <IconButton color="error" onClick={() => deleteEnvironment(envIndex)} sx={{ '&:hover': { bgcolor: 'rgba(239, 68, 68, 0.1)' } }}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </Box>
 
-                                <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1, fontWeight: 'bold' }}>
+                                <Typography variant="caption" sx={{ display: 'block', mb: 1.5, fontWeight: 'bold', color: isDarkMode ? '#94a3b8' : '#64748b', letterSpacing: '0.05em' }}>
                                     VARIABLES
                                 </Typography>
 
-                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
                                     {env.variables.map((v, varIndex) => (
-                                        <Box key={varIndex} sx={{ display: 'flex', gap: 1 }}>
+                                        <Box key={varIndex} sx={{ display: 'flex', gap: 1.5 }}>
                                             <TextField
                                                 size="small"
                                                 placeholder="Key (e.g. baseUrl)"
                                                 value={v.key}
                                                 onChange={(e) => updateVariable(envIndex, varIndex, 'key', e.target.value)}
-                                                sx={{ flex: 1 }}
+                                                sx={{
+                                                    flex: 1,
+                                                    '& .MuiOutlinedInput-root': { color: isDarkMode ? '#f8fafc' : '#1e293b', '& fieldset': { borderColor: isDarkMode ? '#2d2d3a' : '#e2e8f0' }, '&:hover fieldset': { borderColor: '#8b5cf6' }, '&.Mui-focused fieldset': { borderColor: '#8b5cf6' } }
+                                                }}
                                             />
                                             <TextField
                                                 size="small"
                                                 placeholder="Value (e.g. https://api.com)"
                                                 value={v.value}
                                                 onChange={(e) => updateVariable(envIndex, varIndex, 'value', e.target.value)}
-                                                sx={{ flex: 2 }}
+                                                sx={{
+                                                    flex: 2,
+                                                    '& .MuiOutlinedInput-root': { color: isDarkMode ? '#f8fafc' : '#1e293b', '& fieldset': { borderColor: isDarkMode ? '#2d2d3a' : '#e2e8f0' }, '&:hover fieldset': { borderColor: '#8b5cf6' }, '&.Mui-focused fieldset': { borderColor: '#8b5cf6' } }
+                                                }}
                                             />
-                                            <IconButton size="small" color="error" onClick={() => deleteVariable(envIndex, varIndex)}>
+                                            <IconButton size="small" color="error" onClick={() => deleteVariable(envIndex, varIndex)} sx={{ '&:hover': { bgcolor: 'rgba(239, 68, 68, 0.1)' } }}>
                                                 <DeleteIcon fontSize="small" />
                                             </IconButton>
                                         </Box>
                                     ))}
-                                    <Button size="small" startIcon={<AddIcon />} onClick={() => addVariable(envIndex)} sx={{ alignSelf: 'flex-start' }}>
+                                    <Button size="small" startIcon={<AddIcon />} onClick={() => addVariable(envIndex)} sx={{ alignSelf: 'flex-start', color: '#8b5cf6', '&:hover': { bgcolor: 'rgba(139, 92, 246, 0.1)' } }}>
                                         Add Variable
                                     </Button>
                                 </Box>
                             </Box>
                         ))}
 
-                        <Button variant="outlined" startIcon={<AddIcon />} onClick={addEnvironment} sx={{ borderStyle: 'dashed' }}>
+                        <Button variant="outlined" startIcon={<AddIcon />} onClick={addEnvironment} sx={{ borderStyle: 'dashed', borderColor: isDarkMode ? '#2d2d3a' : '#e2e8f0', color: isDarkMode ? '#e2e8f0' : '#475569', '&:hover': { borderColor: '#8b5cf6', bgcolor: 'rgba(139, 92, 246, 0.05)' } }}>
                             Create Environment
                         </Button>
                     </Box>
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog}>Cancel</Button>
-                    <Button variant="contained" onClick={handleSaveEnvironments}>Save</Button>
+                <DialogActions sx={{ p: 3, borderTop: '1px solid #2d2d3a' }}>
+                    <Button onClick={handleCloseDialog} sx={{ color: isDarkMode ? '#94a3b8' : '#64748b', '&:hover': { bgcolor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' } }}>Cancel</Button>
+                    <Button variant="contained" onClick={handleSaveEnvironments} sx={{ bgcolor: '#8b5cf6', color: '#000', fontWeight: 'bold', '&:hover': { bgcolor: '#7c3aed' } }}>Save</Button>
                 </DialogActions>
             </Dialog>
         </>
