@@ -365,7 +365,7 @@ function App() {
                   <option value="PATCH" className="text-yellow-500">PATCH</option>
                   <option value="DELETE" className="text-red-500">DELETE</option>
                 </select>
-                <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">expand_more</span>
+                {/* <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none">expand_more</span> */}
               </div>
               <div className="flex-1 flex gap-2 h-full">
                 <div className="flex-1 h-full bg-slate-50 dark:bg-surface-dark border border-slate-200 dark:border-border-dark rounded-lg overflow-hidden focus-within:ring-1 focus-within:ring-primary focus-within:border-primary">
